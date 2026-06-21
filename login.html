@@ -47,8 +47,10 @@ window.location.href = "feed.html";
 }
 catch(error){
 
-document.getElementById("message").innerHTML =
-"Неверный логин или пароль";
+alert(error.code);
+alert(error.message);
+
+}
 
 }
 
