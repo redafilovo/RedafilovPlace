@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Вход</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Вход</h1>
+
+<input id="username" placeholder="Логин">
+<br><br>
+
+<input id="password" type="password" placeholder="Пароль">
+<br><br>
+
+<button id="loginBtn">Войти</button>
+
+<p id="message"></p>
+
+<script type="module">
+
+import { auth } from "./firebase.js";
+
+import {
+signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+document.getElementById("loginBtn").onclick = async () => {
+
+let username = document.getElementById("username").value;
+let password = document.getElementById("password").value;
+
+let email = username + "@redafilovplace.local";
+
+try {
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+window.location.href = "feed.html";
+
+}
+catch(error){
+
+document.getElementById("message").innerHTML =
+"Неверный логин или пароль";
+
+}
+
+};
+
+</script>
+
+</body>
+</html>
