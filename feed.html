@@ -71,12 +71,21 @@ let text = document.getElementById("postText").value;
 
 if(text=="") return;
 
-await push(ref(db,"posts"),{
+try {
 
-author: currentUserName,
-text: text
-
+await push(ref(db,"posts"), {
+    author: currentUserName,
+    text: text
 });
+
+alert("Пост сохранён!");
+
+} catch(error) {
+
+alert(error.code);
+alert(error.message);
+
+}
 
 document.getElementById("postText").value="";
 
@@ -102,11 +111,11 @@ snap.forEach(post=>{
 
 let p=post.val();
 
-html += 
+html += `
 <hr>
 <h3>${p.author}</h3>
 <p>${p.text}</p>
-;
+`;
 
 });
 
