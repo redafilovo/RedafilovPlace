@@ -10,20 +10,88 @@
 <h1>Регистрация</h1>
 
 <input id="username" placeholder="Логин">
-
 <br><br>
 
 <input id="password" type="password" placeholder="Пароль">
-
 <br><br>
 
 <input id="invite" placeholder="Код приглашения">
-
 <br><br>
 
-<button id="registerBtn">
-Создать аккаунт
-</button>
+<button id="registerBtn">Создать аккаунт</button>
+
+<p id="message"></p>
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+ref,
+get,
+set
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+document.getElementById("registerBtn").onclick = async () => {
+
+let username = document.getElementById("username").value;
+let password = document.getElementById("password").value;
+let invite = document.getElementById("invite").value;
+
+let inviteRef = ref(db, "inviteCodes/" + invite);
+let inviteSnap = await get(inviteRef);
+
+if (!inviteSnap.exists()) {
+
+document.getElementById("message").innerHTML =
+"Неверный код приглашения";
+
+return;
+}
+
+let email = username + "@redafilovplace.local";
+
+try {
+
+let userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+let role = "user";
+
+if (username === "Redafilovo") {
+role = "admin";
+}
+
+await set(
+ref(db, "users/" + userCredential.user.uid),
+{
+username: username,
+role: role
+}
+);
+
+document.getElementById("message").innerHTML =
+"Аккаунт создан!";
+
+}
+catch(error){
+
+document.getElementById("message").innerHTML =
+error.message;
+
+}
+
+};
+
+</script>
 
 </body>
 </html>
