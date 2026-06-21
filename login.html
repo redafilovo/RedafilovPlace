@@ -27,10 +27,7 @@ import {
 signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-document.getElementById("loginBtn").onclick = () => {
-  alert("JS работает");
-};
-
+document.getElementById("loginBtn").onclick = async () => {
 let username = document.getElementById("username").value;
 let password = document.getElementById("password").value;
 
